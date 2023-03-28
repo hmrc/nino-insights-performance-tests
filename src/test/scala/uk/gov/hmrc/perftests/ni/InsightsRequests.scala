@@ -30,7 +30,7 @@ object InsightsRequests extends ServicesConfiguration {
     http("Check if account is on watch list")
       .post(s"$baseUrl$route/check/insights")
       .header(HttpHeaderNames.ContentType, "application/json")
-      .header(HttpHeaderNames.Authorization, "2345")
+      .header(HttpHeaderNames.Authorization, "QGYkpEia-0Ll1sbyTBFvhFnIE8TlKBeilrICrcngwJtTM4Emc52Hl6XpCQBaCYBOCuzkunWfn")
       .body(StringBody("""|{
                           |  "nino": "${nino}"
                           |}
