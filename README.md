@@ -3,7 +3,6 @@
 # nino-insights-performance-tests
 Performance test suite for the `<digital service name>`, using [performance-test-runner](https://github.com/hmrc/performance-test-runner) under the hood.
 
-
 ## Running the tests
 
 Prior to executing the tests ensure you have:
@@ -11,11 +10,28 @@ Prior to executing the tests ensure you have:
 * Docker - to start mongo container
 * Installed/configured service manager
 
-Run the following command to start the services locally:
-```
-docker run --rm -d --name mongo -d -p 27017:27017 mongo:4.0
+If you don't have mongodb installed locally you can run it in docker using the following command
 
-sm --start PLATFORM_EXAMPLE_UI_TESTS -r --wait 100
+    docker run -d --rm --name mongodb -p 27017-27019:27017-27019 mongo:4
+
+If you don't have postgres installed locally you can run it in docker using the following command
+
+    docker run -d --rm --name postgresql -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -p 5432:5432 postgres:10.14
+
+Run the following command to start the services locally:
+
+```
+sm --start NINO_INSIGHTS_PROXY ATTRIBUTE_RISK_LISTS NINO_GATEWAY INTERNAL_AUTH --appendArgs '{
+        "NINO_INSIGHTS_PROXY": [
+            "-J-Dauditing.consumer.baseUri.port=6001",
+            "-J-Dauditing.consumer.baseUri.host=localhost",
+            "-J-Dauditing.enabled=true"
+        ],
+        "ATTRIBUTE_RISK_LISTS": [
+            "-J-Dmicroservice.risk-lists.database.dbName=postgres",
+            "-J-Dmicroservice.risk-lists.database.use-canned-data=true"
+        ]
+    }'
 ```
 
 Using the `--wait 100` argument ensures a health check is run on all the services started as part of the profile. `100` refers to the given number of seconds to wait for services to pass health checks.
