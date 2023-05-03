@@ -21,39 +21,39 @@ If you don't have postgres installed locally you can run it in docker using the 
 Run the following command to start the services locally:
 
 ```
-sm --start NINO_INSIGHTS_PROXY ATTRIBUTE_RISK_LISTS NINO_GATEWAY INTERNAL_AUTH --appendArgs '{
+sm --start NINO_INSIGHTS_PROXY NINO_INSIGHTS NINO_GATEWAY INTERNAL_AUTH --appendArgs '{
         "NINO_INSIGHTS_PROXY": [
             "-J-Dauditing.consumer.baseUri.port=6001",
             "-J-Dauditing.consumer.baseUri.host=localhost",
-            "-J-Dauditing.enabled=true"
+            "-J-Dmicroservice.services.access-control.enabled=true",
+            "-J-Dmicroservice.services.access-control.allow-list.1=allowed-test-hmrc-service"
         ],
-        "ATTRIBUTE_RISK_LISTS": [
-            "-J-Dmicroservice.risk-lists.database.dbName=postgres",
-            "-J-Dmicroservice.risk-lists.database.use-canned-data=true"
+        "NINO_INSIGHTS": [
+            "-J-Dmicroservice.nino-insights.database.dbName=postgres",
+            "-J-Dmicroservice.nino-insights.database.use-canned-data=true",
+            "-J-Dauditing.enabled=true"
         ]
     }'
 ```
 
 Using the `--wait 100` argument ensures a health check is run on all the services started as part of the profile. `100` refers to the given number of seconds to wait for services to pass health checks.
 
-## Logging
-
-The template uses [logback.xml](src/test/resources) to configure log levels. The default log level is *WARN*. This can be updated to use a lower level for example *TRACE* to view the requests sent and responses received during the test.
-
 #### Smoke test
 
 It might be useful to try the journey with one user to check that everything works fine before running the full performance test
 ```
+./run-perf-test.sh
+```
+or use this command below:
+```
 sbt -Dperftest.runSmokeTest=true -DrunLocal=true gatling:test
 ```
-
-#### Running the performance test
+or use
 ```
 sbt -DrunLocal=true gatling:test
 ```
-### Run the example test against staging environment
+### Run the smoke test against staging environment env - not recommended to run locally
 
-#### Smoke test
 ```
 sbt -Dperftest.runSmokeTest=true -DrunLocal=false gatling:test
 ```
@@ -78,3 +78,8 @@ To run a full performance test against staging environment, implement a job buil
  ```
 
 [Visit the official Scalafmt documentation to view a complete list of tasks which can be run.](https://scalameta.org/scalafmt/docs/installation.html#task-keys)
+
+
+## Logging
+
+The template uses [logback.xml](src/test/resources) to configure log levels. The default log level is *WARN*. This can be updated to use a lower level for example *TRACE* to view the requests sent and responses received during the test.
