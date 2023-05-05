@@ -24,13 +24,13 @@ import uk.gov.hmrc.performance.conf.ServicesConfiguration
 object InsightsRequests extends ServicesConfiguration {
 
   val baseUrl: String = baseUrlFor("nino-insights-proxy")
-  val route: String   = "/nino-insights-proxy"
+  val route: String   = "/nino-insights"
 
   val checkInsightsWatchListDirectly: HttpRequestBuilder =
     http("Check if account is on watch list")
-      .post(s"$baseUrl$route/check/insights")
+      .post(s"$baseUrl/check/insights")
       .header(HttpHeaderNames.ContentType, "application/json")
-      .header(HttpHeaderNames.Authorization, "QGYkpEia-0Ll1sbyTBFvhFnIE8TlKBeilrICrcngwJtTM4Emc52Hl6XpCQBaCYBOCuzkunWfn")
+      .header(HttpHeaderNames.UserAgent, "allowed-test-hmrc-service")
       .body(StringBody("""|{
                           |  "nino": "${nino}"
                           |}
