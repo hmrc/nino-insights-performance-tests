@@ -28,7 +28,7 @@ object GatewayRequests extends ServicesConfiguration {
 
   val checkWatchListViaGateway: HttpRequestBuilder =
     http("Check if account is on watch list")
-      .post(s"$baseUrl$route/check/insights")
+      .post(s"$baseUrl/check/insights")
       .header(HttpHeaderNames.ContentType, "application/json")
       .header(HttpHeaderNames.UserAgent, "allowed-test-hmrc-service")
       .body(StringBody("""|{
