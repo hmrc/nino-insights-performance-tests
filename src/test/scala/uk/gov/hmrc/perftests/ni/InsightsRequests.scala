@@ -26,7 +26,7 @@ object InsightsRequests extends ServicesConfiguration {
   val baseUrl: String = baseUrlFor("nino-insights-proxy")
   val route: String   = "/nino-insights"
 
-  val checkInsightsWatchListDirectly: HttpRequestBuilder =
+  val checkInsightsWatchList: HttpRequestBuilder =
     http("Check if account is on watch list")
       .post(s"$baseUrl/check/insights")
       .header(HttpHeaderNames.ContentType, "application/json")
@@ -35,6 +35,21 @@ object InsightsRequests extends ServicesConfiguration {
                           |  "nino": "${nino}"
                           |}
                           |""".stripMargin))
+      .asJson
+      .check(status.is(200))
+      .check(jsonPath("$.riskScore").is("${riskScore}"))
+      .check(jsonPath("$.reason").is("${reason}"))
+
+  val checkInsightsWatchListWithRoute: HttpRequestBuilder =
+    http("Check if account is on watch list")
+      .post(s"$baseUrl/nino-insights/check/insights")
+      .header(HttpHeaderNames.ContentType, "application/json")
+      .header(HttpHeaderNames.UserAgent, "allowed-test-hmrc-service")
+      .body(StringBody(
+        """|{
+           |  "nino": "${nino}"
+           |}
+           |""".stripMargin))
       .asJson
       .check(status.is(200))
       .check(jsonPath("$.riskScore").is("${riskScore}"))

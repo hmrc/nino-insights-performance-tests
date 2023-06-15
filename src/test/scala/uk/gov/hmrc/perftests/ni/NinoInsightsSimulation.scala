@@ -18,13 +18,15 @@ package uk.gov.hmrc.perftests.ni
 
 import uk.gov.hmrc.performance.simulation.PerformanceTestRunner
 import uk.gov.hmrc.perftests.ni.GatewayRequests.checkWatchListViaGateway
-import uk.gov.hmrc.perftests.ni.InsightsRequests.checkInsightsWatchListDirectly
+import uk.gov.hmrc.perftests.ni.InsightsRequests.{checkInsightsWatchList, checkInsightsWatchListWithRoute}
 
 class NinoInsightsSimulation extends PerformanceTestRunner {
 
   setup("check-watch-list-gateway", "Check Watch List via Gateway") withRequests checkWatchListViaGateway
 
-  setup("check-watch-list-direct", "Check Watch List directly") withRequests checkInsightsWatchListDirectly
+  setup("check-watch-list", "Check Watch List directly") withRequests checkInsightsWatchList
+
+  setup("check-watch-list-using-route", "Check Watch List directly") withRequests checkInsightsWatchListWithRoute
 
   runSimulation()
 }
