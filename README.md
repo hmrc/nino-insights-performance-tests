@@ -1,8 +1,7 @@
-**This is a template README.md.  Be sure to update this with project specific content that describes your performance test project.**
-
 # nino-insights-performance-tests
-Performance test suite for the `<digital service name>`, using [performance-test-runner](https://github.com/hmrc/performance-test-runner) under the hood.
+Performance test suite for `nino-insights` services, using [performance-test-runner](https://github.com/hmrc/performance-test-runner) under the hood.
 
+##NOTE: The tests rely on the test data in the [ninos.csv](src/test/resources/data/ninos.csv) file.
 ## Running the tests
 
 Prior to executing the tests ensure you have:
