@@ -17,32 +17,13 @@ If you don't have postgres installed locally you can run it in docker using the 
 
     docker run -d --rm --name postgresql -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -p 5432:5432 postgres:10.14
 
-Run the following command to start the services locally:
-
-```
-sm2 --start NINO_INSIGHTS_PROXY NINO_INSIGHTS NINO_GATEWAY INTERNAL_AUTH --appendArgs '{
-        "NINO_INSIGHTS_PROXY": [
-            "-J-Dauditing.consumer.baseUri.port=6001",
-            "-J-Dauditing.consumer.baseUri.host=localhost",
-            "-J-Dmicroservice.services.access-control.enabled=true",
-            "-J-Dmicroservice.services.access-control.allow-list.0=nino-gateway",
-            "-J-Dmicroservice.services.access-control.allow-list.1=allowed-test-hmrc-service"
-        ],
-        "NINO_INSIGHTS": [
-            "-J-Dmicroservice.nino-insights.database.dbName=postgres",
-            "-J-Dmicroservice.nino-insights.database.use-canned-data=true",
-            "-J-Dauditing.enabled=true"
-        ]
-    }'
-```
-
-Using the `--wait 100` argument ensures a health check is run on all the services started as part of the profile. `100` refers to the given number of seconds to wait for services to pass health checks.
+Run the `./start_services.sh` script to start the services locally
 
 #### Smoke test
 
 It might be useful to try the journey with one user to check that everything works fine before running the full performance test
 ```
-./run-perf-test.sh
+./run_tests.sh
 ```
 or use this command below:
 ```
@@ -51,11 +32,6 @@ sbt -Dperftest.runSmokeTest=true -DrunLocal=true gatling:test
 or use
 ```
 sbt -DrunLocal=true gatling:test
-```
-### Run the smoke test against staging environment env - not recommended to run locally
-
-```
-sbt -Dperftest.runSmokeTest=true -DrunLocal=false gatling:test
 ```
 
 #### Run the performance test
