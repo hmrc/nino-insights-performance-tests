@@ -32,26 +32,25 @@ object InsightsRequests extends ServicesConfiguration {
       .header(HttpHeaderNames.ContentType, "application/json")
       .header(HttpHeaderNames.UserAgent, "allowed-test-hmrc-service")
       .body(StringBody("""|{
-                          |  "nino": "${nino}"
+                          |  "nino": "#{nino}"
                           |}
                           |""".stripMargin))
       .asJson
       .check(status.is(200))
-      .check(jsonPath("$.riskScore").is("${riskScore}"))
-      .check(jsonPath("$.reason").is("${reason}"))
+      .check(jsonPath("$.riskScore").is("#{riskScore}"))
+      .check(jsonPath("$.reason").is("#{reason}"))
 
   val checkInsightsWatchListWithRoute: HttpRequestBuilder =
     http("Check if account is on watch list")
       .post(s"$baseUrl/nino-insights/check/insights")
       .header(HttpHeaderNames.ContentType, "application/json")
       .header(HttpHeaderNames.UserAgent, "allowed-test-hmrc-service")
-      .body(StringBody(
-        """|{
-           |  "nino": "${nino}"
+      .body(StringBody("""|{
+           |  "nino": "#{nino}"
            |}
            |""".stripMargin))
       .asJson
       .check(status.is(200))
-      .check(jsonPath("$.riskScore").is("${riskScore}"))
-      .check(jsonPath("$.reason").is("${reason}"))
+      .check(jsonPath("$.riskScore").is("#{riskScore}"))
+      .check(jsonPath("$.reason").is("#{reason}"))
 }

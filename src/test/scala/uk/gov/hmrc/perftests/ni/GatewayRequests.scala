@@ -32,11 +32,11 @@ object GatewayRequests extends ServicesConfiguration {
       .header(HttpHeaderNames.ContentType, "application/json")
       .header(HttpHeaderNames.UserAgent, "allowed-test-hmrc-service")
       .body(StringBody("""|{
-                          |  "nino": "${nino}"
+                          |  "nino": "#{nino}"
                           |}
                           |""".stripMargin))
       .asJson
       .check(status.is(200))
-      .check(jsonPath("$.riskScore").is("${riskScore}"))
-      .check(jsonPath("$.reason").is("${reason}"))
+      .check(jsonPath("$.riskScore").is("#{riskScore}"))
+      .check(jsonPath("$.reason").is("#{reason}"))
 }
